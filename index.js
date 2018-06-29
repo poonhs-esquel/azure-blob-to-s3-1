@@ -37,7 +37,13 @@ function copy (options) {
   })
 
   return BlobList(blob, options.azure.container, options.azure.token)
-    .on('page', (page) => log.azure.info({message: 'page', page}))
+    .on('page', (page) => {
+      log.azure.info({message: 'page', page})
+      if(page.token){
+        options.aws.token = page.token
+        copy(options)
+      }
+    })
     .pipe(through.obj(function (file, enc, callback) {
       log.azure.debug({message: 'file', file})
       callback(null, file)
