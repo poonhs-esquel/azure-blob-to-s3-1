@@ -67,7 +67,7 @@ function copy (options) {
       const stream = new RetryStream(createBlobStream.bind(null, file.name), {
         delay: 1000
       })
-
+      log.s3.info({message: 'upload', filename: file.name})
       s3.upload({Key: file.name, Body: stream}, callback)
     })
   }
